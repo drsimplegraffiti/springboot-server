@@ -1,0 +1,86 @@
+input ProductFilter {
+    name: String
+    category: String
+    minPrice: Float
+    maxPrice: Float
+}
+
+input PaginationRequest {
+    page: Int = 0
+    size: Int = 10
+}
+
+
+
+type PaginationResponse_Product {
+    content: [Product]
+    page: Int
+    size: Int
+    totalElements: Float
+    totalPages: Int
+}
+
+type TokenPair {
+    accessToken: String!
+    refreshToken: String!
+}
+
+enum Role {
+    USER
+    ADMIN
+}
+
+
+
+input RegisterRequest {
+    fullName: String!
+    email: String!
+    password: String!
+    role: Role!
+}
+
+input LoginRequest {
+    username: String!
+    password: String!
+}
+
+input RefreshTokenRequest {
+    refreshToken: String!
+}
+
+
+type Product{
+    id: ID
+    name: String,
+    category: String
+    price: Float
+    stock: Int
+}
+
+input ProductInput {
+    name: String!
+    category: String!
+    price: Float!
+    stock: Int!
+}
+
+type Query {
+    getProductsPaginated(filter: ProductFilter, pagination: PaginationRequest): PaginationResponse_Product
+    getProducts: [Product]
+    getProductsByCategory(category: String!): [Product] #! means this argument is required
+}
+
+type Mutation {
+
+    #    auth
+    registerUser(input: RegisterRequest!): Boolean
+    login(input: LoginRequest!): TokenPair
+    refreshToken(input: RefreshTokenRequest!): TokenPair
+
+
+
+
+    saveProduct(input: ProductInput!): Product
+    updateStock(id: Int!, quantity: Int!): Product
+    deleteProduct(id: Int!): Boolean
+}
