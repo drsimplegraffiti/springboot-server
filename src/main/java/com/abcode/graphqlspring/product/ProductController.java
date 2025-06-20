@@ -12,6 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Controller
@@ -23,18 +27,39 @@ public class ProductController {
         this.productService = productService;
     }
 
+    @MutationMapping
+    public Boolean uploadFiles(@Argument List<MultipartFile> files) throws IOException {
+        for (MultipartFile file : files) {
+            Path path = Paths.get(System.getProperty("java.io.tmpdir"), file.getOriginalFilename());
+            Files.write(path, file.getBytes());
+        }
+        return true;
+    }
+
+    @MutationMapping
+    public Boolean uploadFile(@Argument MultipartFile file) throws IOException {
+        try {
+            String filename = file.getOriginalFilename();
+            byte[] bytes = file.getBytes();
+
+            Path path = Paths.get(System.getProperty("java.io.tmpdir"), filename);
+            Files.write(path, bytes);
+
+            System.out.println("File saved to: " + path);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     @PreAuthorize("isAuthenticated()") //@PreAuthorize("hasRole('ADMIN')")
     @QueryMapping(value = "getProducts")
     public List<Product> getProducts() {
         return productService.getProducts();
     }
 
-    @MutationMapping
-    public Boolean uploadFile(@Argument MultipartFile file) {
-        // save file to disk or cloud
-        System.out.println(file.getOriginalFilename());
-        return true;
-    }
+
 
     @PreAuthorize("isAuthenticated()")
     @QueryMapping

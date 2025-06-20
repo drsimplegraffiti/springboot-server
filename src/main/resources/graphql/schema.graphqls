@@ -64,11 +64,17 @@ input ProductInput {
     stock: Int!
 }
 
+scalar Upload
+
+
 type Query {
     getProductsPaginated(filter: ProductFilter, pagination: PaginationRequest): PaginationResponse_Product
     getProducts: [Product]
     getProductsByCategory(category: String!): [Product] #! means this argument is required
 }
+
+
+
 
 type Mutation {
 
@@ -77,6 +83,8 @@ type Mutation {
     login(input: LoginRequest!): TokenPair
     refreshToken(input: RefreshTokenRequest!): TokenPair
 
+    uploadFile(file: Upload!): Boolean
+    uploadFiles(files: [Upload!]!): Boolean
 
 
 

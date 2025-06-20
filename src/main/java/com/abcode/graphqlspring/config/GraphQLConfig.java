@@ -2,6 +2,7 @@ package com.abcode.graphqlspring.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 import org.springframework.graphql.server.WebGraphQlInterceptor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
@@ -9,8 +10,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import reactor.core.publisher.Mono;
 
 
+
+
 @Configuration
 public class GraphQLConfig {
+
+    @Bean
+    public RuntimeWiringConfigurer runtimeWiringConfigurer() {
+        return wiringBuilder -> wiringBuilder.scalar(UploadScalar.Upload);
+    }
 
     @Bean
     public WebGraphQlInterceptor disableIntrospectionForUnauthorized() {

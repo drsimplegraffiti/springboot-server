@@ -22,19 +22,6 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-//    public PaginationResponse<Product> getProducts(ProductFilter filter, PaginationRequest pagination) {
-//        Pageable pageable = PageRequest.of(pagination.getPage(), pagination.getSize());
-//        Specification<Product> spec = ProductSpecification.withFilters(filter != null ? filter : new ProductFilter());
-//        Page<Product> page = productRepository.findAll(spec, pageable);
-//
-//        return new PaginationResponse<>(
-//                page.getContent(),
-//                page.getNumber(),
-//                page.getSize(),
-//                page.getTotalElements(),
-//                page.getTotalPages()
-//        );
-//    }
 public PaginationResponse<Product> getProducts(ProductFilter filter, PaginationRequest pagination) {
     int pageIndex = Math.max(pagination.getPage() - 1, 0); // Ensure it's not negative
     Pageable pageable = PageRequest.of(pageIndex, pagination.getSize());

@@ -34,7 +34,7 @@
         <dependency>
             <groupId>com.graphql-java</groupId>
             <artifactId>graphql-java-extended-scalars</artifactId>
-            <version>21.0</version> <!-- or latest -->
+            <version>21.0</version> <!-- Use latest stable -->
         </dependency>
 
         <dependency>
